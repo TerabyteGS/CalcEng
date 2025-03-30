@@ -1,57 +1,175 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <title>Calculadora de Destilação</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora do Engenheiro</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: Arial; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .input-group { margin: 15px 0; }
-        label { display: inline-block; width: 250px; }
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --light: #ecf0f1;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            background-color: #f5f7fa;
+        }
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: var(--primary);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            padding: 20px 0;
+        }
+        .sidebar-header {
+            text-align: center;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar-menu li {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .sidebar-menu li:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .sidebar-menu li.active {
+            background: var(--secondary);
+        }
+        .sidebar-menu i {
+            margin-right: 10px;
+        }
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            width: calc(100% - 250px);
+        }
+        .calculator {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .calculator.active {
+            display: block;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        #graph {
+            width: 100%;
+            height: 400px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <h1>Destilação Binária</h1>
-    <div class="input-group">
-        <label>Volatilidade relativa (α):</label>
-        <input type="number" id="alpha" value="2.5" step="0.1" min="1.1">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Engenharia Química</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="active" onclick="showCalculator('thermo')">
+                <i class="fas fa-fire"></i> Termodinâmica
+            </li>
+            <li onclick="showCalculator('transport')">
+                <i class="fas fa-tint"></i> Fenômenos de Transporte
+            </li>
+            <li onclick="showCalculator('operations')">
+                <i class="fas fa-flask"></i> Operações Unitárias
+            </li>
+        </ul>
     </div>
-    <div class="input-group">
-        <label>Alimentação (x<sub>F</sub>):</label>
-        <input type="range" id="xF" min="0.01" max="0.99" value="0.20" step="0.01">
-        <span id="xF-value">0.20</span>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Termodinâmica Calculator -->
+        <div id="thermo" class="calculator active">
+            <h2><i class="fas fa-fire"></i> Calculadora Termodinâmica</h2>
+            <p>Simule propriedades de fluidos e equilíbrio de fases.</p>
+            
+            <div class="input-group">
+                <label for="thermo-alpha">Volatilidade relativa (α):</label>
+                <input type="number" id="thermo-alpha" value="2.5" step="0.1" min="1.1">
+            </div>
+            
+            <div class="input-group">
+                <label for="thermo-xF">Composição da alimentação (x<sub>F</sub>):</label>
+                <input type="range" id="thermo-xF" min="0.01" max="0.99" value="0.20" step="0.01">
+                <span id="thermo-xF-value">0.20</span>
+            </div>
+            
+            <button onclick="calculateThermo()">Calcular</button>
+            <div id="thermo-graph"></div>
+        </div>
+
+        <!-- Fenômenos de Transporte Calculator -->
+        <div id="transport" class="calculator">
+            <h2><i class="fas fa-tint"></i> Calculadora de Transporte</h2>
+            <p>Calcule perda de carga em tubulações.</p>
+            
+            <div class="input-group">
+                <label for="pipe-diameter">Diâmetro da tubulação (m):</label>
+                <input type="number" id="pipe-diameter" value="0.1" step="0.01" min="0.01">
+            </div>
+            
+            <button onclick="calculateTransport()">Calcular</button>
+            <div id="transport-graph"></div>
+        </div>
+
+        <!-- Operações Unitárias Calculator -->
+        <div id="operations" class="calculator">
+            <h2><i class="fas fa-flask"></i> Calculadora de Operações Unitárias</h2>
+            <p>Simule eficiência de colunas de destilação.</p>
+            
+            <div class="input-group">
+                <label for="op-stages">Número de pratos teóricos:</label>
+                <input type="number" id="op-stages" value="5" min="1" max="20">
+            </div>
+            
+            <button onclick="calculateOperations()">Calcular</button>
+            <div id="operations-graph"></div>
+        </div>
     </div>
-    <!-- Adicione x_D e x_B similares -->
-    <button onclick="calcular()">Calcular</button>
-    <div id="grafico"></div>
 
-    <script>
-        function calcular() {
-            const alpha = parseFloat(document.getElementById("alpha").value);
-            const xF = parseFloat(document.getElementById("xF").value);
-            // Capturar outros inputs...
-
-            // Gerar curva de equilíbrio (JavaScript puro)
-            const x_A = Array.from({length: 100}, (_, i) => i/100);
-            const y_A = x_A.map(x => (alpha * x) / (1 + (alpha - 1) * x));
-
-            // Plotar com Plotly
-            Plotly.newPlot("grafico", [{
-                x: x_A,
-                y: y_A,
-                name: "Curva de Equilíbrio",
-                mode: "lines"
-            }, {
-                x: [0, 1],
-                y: [0, 1],
-                name: "Linha 45°",
-                line: { dash: "dash" }
-            }], {
-                xaxis: { title: "x_A (Líquido)" },
-                yaxis: { title: "y_A (Vapor)" }
-            });
-        }
-        // Inicializar
-        calcular();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

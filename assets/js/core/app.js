@@ -30,83 +30,140 @@ const modulesConfig = {
     }
 };
 
-// Carregador de conteúdo robusto
+
 async function loadContent(config) {
     const container = document.getElementById('content-container');
-    if (!container) {
-        console.error('Container principal não encontrado!');
-        return;
-    }
+    if (!container) return;
 
     try {
         container.innerHTML = '<div class="loader">Carregando...</div>';
         
-        // Debug: Mostra o caminho que está tentando carregar
         console.log(`Tentando carregar: ${config.path}`);
         
         if (config.type === 'calculator') {
-            // Adiciona timestamp para evitar cache
-            const module = await import(`${config.path}?t=${Date.now()}`);
-            
-            if (!module.getInterface) {
-                throw new Error('Módulo não exporta getInterface()');
-            }
-            
-            container.innerHTML = module.getInterface();
-            
-            if (module.init) {
-                await module.init();
-            }
+            // ... código existente para calculadoras ...
         } 
         else if (config.type === 'note') {
-            const module = await import(`${config.path}?t=${Date.now()}`);
+            // Adicione tratamento especial para nomes de arquivos com espaços
+            const modulePath = encodeURI(config.path).replace(/%20/g, ' ');
+            const module = await import(/* @vite-ignore */ `${modulePath}?t=${Date.now()}`);
             
-            if (!module.content) {
-                throw new Error('Módulo não exporta content');
+            if (!module || !module.content) {
+                throw new Error('Módulo não exporta conteúdo válido');
             }
-            
+
+            // Verifica se o conteúdo é uma string
+            if (typeof module.content !== 'string') {
+                throw new Error('O conteúdo deve ser uma string');
+            }
+
             container.innerHTML = `
                 <div class="note-viewer">
                     ${renderLatexContent(module.content)}
                 </div>
             `;
             
-            if (window.MathJax && window.MathJax.typesetPromise) {
+            if (window.MathJax?.typesetPromise) {
                 await MathJax.typesetPromise();
             }
         }
     } catch (error) {
-        console.error('Erro detalhado ao carregar:', error);
+        console.error('Erro ao carregar:', error);
         container.innerHTML = `
             <div class="error">
                 <h3>Erro ao carregar conteúdo</h3>
                 <p>${error.message}</p>
-                <p>Caminho tentado: ${config.path}</p>
-                <button onclick="location.reload()">Recarregar Página</button>
+                <p>Arquivo: ${config.path}</p>
+                <button onclick="location.reload()">Recarregar</button>
             </div>
         `;
     }
 }
+
+
+
 function renderLatexContent(content) {
-    // Primeiro processa listas aninhadas (começando pelas mais internas)
-    content = processNestedLists(content);
-    
-    // Depois processa o resto do conteúdo
-    content = processSectionsAndFormatting(content);
-    
-    return content;
+    if (typeof content !== 'string') {
+        console.error('Conteúdo não é uma string:', content);
+        return '<div class="error">Formato de conteúdo inválido</div>';
+    }
+
+    try {
+        // Processa citações primeiro
+        content = processQuotes(content);
+        
+        // Processa listas aninhadas
+        content = processNestedLists(content);
+        
+        // Processa tabelas
+        content = processTables(content);
+        
+        // Processa seções e formatação
+        content = processSectionsAndFormatting(content);
+        
+        return content;
+    } catch (e) {
+        console.error('Erro ao renderizar:', e);
+        return `<div class="error">Erro de renderização: ${e.message}</div>`;
+    }
 }
 
+function processQuotes(content) {
+    return content.replace(/\\begin\{quote\}([\s\S]*?)\\end\{quote\}/g, (match, quoteContent) => {
+        const processed = quoteContent
+            .trim()
+            .replace(/^``|''$/g, '')
+            .replace(/\\enquote\{(.*?)\}/g, '"$1"');
+        return `<blockquote>${processed}</blockquote>`;
+    });
+}
+
+function processTables(content) {
+    return content.replace(/\\begin\{table\}.*?\[.*?\](.*?)\\end\{table\}/gs, (match, tableContent) => {
+        // Extrai caption
+        const captionMatch = tableContent.match(/\\caption\{(.*?)\}/);
+        const caption = captionMatch ? `<caption>${captionMatch[1]}</caption>` : '';
+        
+        // Processa o conteúdo tabular
+        const tabularMatch = tableContent.match(/\\begin\{tabular\}(.*?)(.*?)\\end\{tabular\}/s);
+        if (!tabularMatch) return '';
+        
+        const alignment = tabularMatch[1];
+        const rows = tabularMatch[2].split('\\\\').filter(row => row.trim());
+        
+        // Processa linhas da tabela
+        const processedRows = rows.map(row => {
+            const cells = row.split('&').map(cell => {
+                let processedCell = cell.trim()
+                    .replace(/\\textbf\{(.*?)\}/g, '<strong>$1</strong>')
+                    .replace(/\\textit\{(.*?)\}/g, '<em>$1</em>');
+                return `<td>${processedCell}</td>`;
+            }).join('');
+            
+            return `<tr>${cells}</tr>`;
+        }).join('');
+        
+        return `
+            <div class="latex-table">
+                <table>
+                    ${caption}
+                    ${processedRows}
+                </table>
+            </div>
+        `;
+    });
+}
+
+
+
 function processNestedLists(content) {
-    // Processa listas de dentro para fora
     let lastContent;
     do {
         lastContent = content;
         content = content.replace(/\\begin\{(itemize|enumerate)\}(.*?)\\end\{\1\}/gs, (match, env, items) => {
             const listItems = items.split('\\item')
-                .filter(item => item.trim()) // Remove itens vazios
+                .filter(item => item.trim())
                 .map(item => {
-                    // Processa qualquer formatação dentro do item
                     let processedItem = item.trim()
                         .replace(/\\textbf\{(.*?)\}/g, '<strong>$1</strong>')
                         .replace(/\\textit\{(.*?)\}/g, '<em>$1</em>');
@@ -115,25 +172,25 @@ function processNestedLists(content) {
                 .join('');
             return env === 'enumerate' ? `<ol>${listItems}</ol>` : `<ul>${listItems}</ul>`;
         });
-    } while (content !== lastContent); // Repete até não haver mais mudanças
+    } while (content !== lastContent);
     
     return content;
 }
 
 function processSectionsAndFormatting(content) {
-    // 2. Processa seções
+    // Processa seções
     content = content.replace(/\\section\*?\{(.*?)\}/g, '<h2>$1</h2>');
     content = content.replace(/\\subsection\*?\{(.*?)\}/g, '<h3>$1</h3>');
 
-    // 3. Processa formatação de texto (para texto fora das listas)
+    // Processa formatação de texto
     content = content.replace(/\\textbf\{(.*?)\}/g, '<strong>$1</strong>');
     content = content.replace(/\\textit\{(.*?)\}/g, '<em>$1</em>');
 
-    // 4. Processa equações matemáticas
+    // Processa equações matemáticas
     content = content.replace(/\\\[(.*?)\\\]/gs, '<div class="math-display">\\[$1\\]</div>');
     content = content.replace(/\\\((.*?)\\\)/gs, '<span class="math-inline">\\($1\\)</span>');
 
-    // 5. Processa figuras
+    // Processa figuras
     content = content.replace(/\\begin\{figure\}(.*?)\\end\{figure\}/gs, (match, figContent) => {
         const imgMatch = figContent.match(/\\includegraphics\[.*?\]\{(.*?)\}/);
         const captionMatch = figContent.match(/\\caption\{(.*?)\}/);

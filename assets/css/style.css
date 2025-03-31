@@ -170,3 +170,87 @@ body {
     padding: 2px 5px;
     border-radius: 3px;
 }
+
+/* Estilo Kindle-like para o conteúdo */
+.note-viewer {
+    font-size: 1.4rem; /* Tamanho maior do texto */
+    line-height: 1.6; /* Espaçamento entre linhas melhorado */
+    color: #333; /* Cor de texto mais suave */
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #f8f1e5; /* Cor de fundo estilo Kindle */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    text-align: justify; /* Justifica o texto */
+    text-justify: inter-word; 
+}
+
+/* Melhorias para tipografia */
+.note-viewer p {
+    margin-bottom: 1.2em;
+}
+
+.note-viewer h2 {
+    font-size: 1.8rem;
+    margin-top: 1.8em;
+    margin-bottom: 0.8em;
+    color: #222;
+    border-bottom: 1px solid #e0d6c2;
+    padding-bottom: 0.3em;
+}
+
+.note-viewer h3 {
+    font-size: 1.5rem;
+    margin-top: 1.5em;
+    margin-bottom: 0.7em;
+    color: #333;
+}
+
+/* Listas mais legíveis */
+.note-viewer ul, .note-viewer ol {
+    margin-left: 1.5em;
+    margin-bottom: 1.2em;
+}
+
+.note-viewer li {
+    margin-bottom: 0.6em;
+}
+
+/* Estilo para equações matemáticas */
+.math-display {
+    margin: 1.5em 0;
+    padding: 1em;
+    background-color: #f0e9dd;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+.math-inline {
+    background-color: #f0e9dd;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+}
+
+/* Figura com estilo */
+.figure {
+    margin: 2em 0;
+    text-align: center;
+}
+
+.caption {
+    font-size: 0.95rem;
+    color: #666;
+    margin-top: 0.5em;
+    font-style: italic;
+}
+
+/* Estilo para código (se tiver) */
+.note-viewer code {
+    font-family: 'Courier New', monospace;
+    background-color: #f0e9dd;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 0.95rem;
+}
+

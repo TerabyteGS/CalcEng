@@ -1,0 +1,81 @@
+/* Estilos gerais */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    display: flex;
+    background-color: #f5f7fa;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 300px;
+    background: #2c3e50;
+    color: white;
+    height: 100vh;
+    position: fixed;
+    padding: 20px 0;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-menu li {
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.sidebar-menu li.category {
+    font-weight: bold;
+    border-left: 4px solid transparent;
+}
+
+.sidebar-menu li.category:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 4px solid #3498db;
+}
+
+.sidebar-menu li.calculator-item {
+    padding-left: 40px;
+    font-weight: normal;
+}
+
+.sidebar-menu li.calculator-item:hover {
+    background: rgba(52, 152, 219, 0.2);
+}
+
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    padding-left: 20px;
+}
+
+.submenu.expanded {
+    max-height: 500px;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 300px;
+    padding: 30px;
+    width: calc(100% - 300px);
+}
+
+.calculator {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin-bottom: 25px;
+}

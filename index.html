@@ -5,101 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora do Engenheiro</title>
     <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --light: #ecf0f1;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            display: flex;
-            background-color: #f5f7fa;
-        }
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background: var(--primary);
-            color: white;
-            height: 100vh;
-            position: fixed;
-            padding: 20px 0;
-        }
-        .sidebar-header {
-            text-align: center;
-            padding: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .sidebar-menu {
-            list-style: none;
-            padding: 0;
-        }
-        .sidebar-menu li {
-            padding: 12px 20px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .sidebar-menu li:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .sidebar-menu li.active {
-            background: var(--secondary);
-        }
-        .sidebar-menu i {
-            margin-right: 10px;
-        }
-        /* Main Content */
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-            width: calc(100% - 250px);
-        }
-        .calculator {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-            display: none;
-        }
-        .calculator.active {
-            display: block;
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        button {
-            background: var(--secondary);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        button:hover {
-            background: #2980b9;
-        }
-        #graph {
-            width: 100%;
-            height: 400px;
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <!-- Sidebar Navigation -->
@@ -107,119 +14,17 @@
         <div class="sidebar-header">
             <h2>Engenharia Química</h2>
         </div>
-        <ul class="sidebar-menu">
-            <li class="active" onclick="showCalculator('thermo')">
-                <i class="fas fa-fire"></i> Termodinâmica
-            </li>
-            <li onclick="showCalculator('transport')">
-                <i class="fas fa-tint"></i> Reador CSTR
-            </li>
-            <li onclick="showCalculator('operations')">
-                <i class="fas fa-flask"></i> Reador PFR
-            </li>
-            <li onclick="showCalculator('heat')">
-                <i class="fas fa-flask"></i> Trocador de Calor
-            </li>
-
-
+        <ul class="sidebar-menu" id="main-menu">
+            <!-- Menu será gerado dinamicamente via JavaScript -->
         </ul>
     </div>
 
     <!-- Main Content -->
-    <div class="main-content">
-        <!-- Termodinâmica Calculator -->
-        <div id="thermo" class="calculator active">
-            <h2><i class="fas fa-fire"></i> Calculadora Termodinâmica</h2>
-            <p>Simule propriedades de fluidos e equilíbrio de fases.</p>
-            
-            <div class="input-group">
-                <label for="thermo-alpha">Volatilidade relativa (α):</label>
-                <input type="number" id="thermo-alpha" value="2.5" step="0.1" min="1.1">
-            </div>
-            
-            <div class="input-group">
-                <label for="thermo-xF">Composição da alimentação (x<sub>F</sub>):</label>
-                <input type="range" id="thermo-xF" min="0.01" max="0.99" value="0.20" step="0.01">
-                <span id="thermo-xF-value">0.20</span>
-            </div>
-            
-            <button onclick="calculateThermo()">Calcular</button>
-            <div id="thermo-graph"></div>
-        </div>
-
-     
-     
-
-        <!-- CSTR -->
-        <div id="transport" class="calculator">
-            <h2><i class="fas fa-tint"></i> Reator CSTR</h2>
-            <div class="input-group">
-                <label for="cstr-CA0">Concentração Inicial (CA₀, mol/L):</label>
-                <input type="number" id="cstr-CA0" value="1.0" step="0.1" min="0.1">
-            </div>
-            <div class="input-group">
-                <label for="cstr-k">Constante Cinética (k, min⁻¹):</label>
-                <input type="number" id="cstr-k" value="0.5" step="0.01" min="0.01">
-            </div>
-            <div class="input-group">
-                <label for="cstr-tau">Tempo Espacial (τ, min):</label>
-                <input type="number" id="cstr-tau" value="2.0" step="0.1" min="0.1">
-            </div>
-            <button onclick="calculateTransport()">Calcular</button>
-            <div id="transport-graph"></div>
-        </div>
-
-        <!-- PFR -->
-        <div id="operations" class="calculator">
-            <h2><i class="fas fa-flask"></i> Reator PFR</h2>
-            <div class="input-group">
-                <label for="pfr-CA0">Concentração Inicial (CA₀, mol/L):</label>
-                <input type="number" id="pfr-CA0" value="1.0" step="0.1" min="0.1">
-            </div>
-            <div class="input-group">
-                <label for="pfr-k">Constante Cinética (k, min⁻¹):</label>
-                <input type="number" id="pfr-k" value="0.3" step="0.01" min="0.01">
-            </div>
-            <div class="input-group">
-                <label for="pfr-length">Comprimento do Reator (L, m):</label>
-                <input type="number" id="pfr-length" value="5.0" step="0.1" min="0.5">
-            </div>
-            <button onclick="calculateOperations()">Calcular</button>
-            <div id="operations-graph"></div>
-        </div>
-
-        <!-- Trocador de Calor -->
-        <div id="heat" class="calculator">
-            <h2><i class="fas fa-fire"></i> Trocador Bitubular</h2>
-            <div class="input-group">
-                <label for="he-mass-flow">Vazão Mássica (kg/s):</label>
-                <input type="number" id="he-mass-flow" value="0.5" step="0.01" min="0.01">
-            </div>
-            <div class="input-group">
-                <label for="he-Cp">Calor Específico (kJ/kg.K):</label>
-                <input type="number" id="he-Cp" value="4.18" step="0.01" min="0.1">
-            </div>
-            <div class="input-group">
-                <label for="he-Tin">Temperatura Entrada (°C):</label>
-                <input type="number" id="he-Tin" value="90" step="1" min="0">
-            </div>
-            <div class="input-group">
-                <label for="he-Tout">Temperatura Saída (°C):</label>
-                <input type="number" id="he-Tout" value="50" step="1" min="0">
-            </div>
-            <div class="input-group">
-                <label for="he-U">Coeficiente Global (W/m².K):</label>
-                <input type="number" id="he-U" value="500" step="10" min="100">
-            </div>
-            <div class="input-group">
-                <label for="he-DTlm">ΔT<sub>lm</sub> (K):</label>
-                <input type="number" id="he-DTlm" value="30" step="1" min="1">
-            </div>
-            <button onclick="calculateHeatExchange()">Calcular</button>
-            <div id="heat-graph"></div>
-        </div>
+    <div class="main-content" id="calculator-container">
+        <!-- Conteúdo será injetado dinamicamente -->
     </div>
 
-    <script src="script.js"></script>
+    <!-- Carrega todos os módulos JS -->
+    <script src="assets/js/core/app.js" type="module"></script>
 </body>
 </html>

@@ -20,6 +20,12 @@ const modulesConfig = {
                 path: "./anotacoes/Engenharia de Alimentos/Fermentação Pizza.js", 
                 type: "note" 
             }
+        },
+        "Outras Palvavras": {
+            "5 teses do Marxismo": { 
+                path: "./anotacoes/filosofia/OutrasPalvras - 5 teses do Marxismo.js", 
+                type: "note" 
+            }
         }
     }
 };

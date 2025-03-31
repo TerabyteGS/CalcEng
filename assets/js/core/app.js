@@ -77,36 +77,39 @@ async function loadContent(config) {
 }
 // Renderizador LaTeX básico
 function renderLatexContent(content) {
-    // Processa ambientes itemize
+    // 1. Processa listas (ambiente itemize)
     content = content.replace(/\\begin\{itemize\}(.*?)\\end\{itemize\}/gs, (match, items) => {
         const listItems = items.split('\\item')
-            .filter(item => item.trim())
+            .filter(item => item.trim()) // Remove itens vazios
             .map(item => `<li>${item.trim()}</li>`)
             .join('');
         return `<ul>${listItems}</ul>`;
     });
 
-    // Processa seções e subseções
+    // 2. Processa seções
     content = content.replace(/\\section\*?\{(.*?)\}/g, '<h2>$1</h2>');
     content = content.replace(/\\subsection\*?\{(.*?)\}/g, '<h3>$1</h3>');
 
-    // Processa texto em negrito e itálico
+    // 3. Processa formatação de texto
     content = content.replace(/\\textbf\{(.*?)\}/g, '<strong>$1</strong>');
     content = content.replace(/\\textit\{(.*?)\}/g, '<em>$1</em>');
 
-    // Processa equações
+    // 4. Processa equações matemáticas
     content = content.replace(/\\\[(.*?)\\\]/gs, '<div class="math-display">\\[$1\\]</div>');
     content = content.replace(/\\\((.*?)\\\)/gs, '<span class="math-inline">\\($1\\)</span>');
 
-    // Processa figuras
+    // 5. Processa figuras (com tratamento especial para caminhos)
     content = content.replace(/\\begin\{figure\}(.*?)\\end\{figure\}/gs, (match, figContent) => {
         const imgMatch = figContent.match(/\\includegraphics\[.*?\]\{(.*?)\}/);
         const captionMatch = figContent.match(/\\caption\{(.*?)\}/);
-        const labelMatch = figContent.match(/\\label\{(.*?)\}/);
+        
+        // Corrige caminho da imagem para o padrão do seu projeto
+        let imgPath = imgMatch ? imgMatch[1] : '';
+        imgPath = imgPath.replace('anotacoes/', './assets/js/core/anotacoes/');
         
         return `
             <div class="figure">
-                ${imgMatch ? `<img src="${imgMatch[1]}" alt="${captionMatch?.[1] || ''}">` : ''}
+                ${imgMatch ? `<img src="${imgPath}" alt="${captionMatch?.[1] || ''}">` : ''}
                 ${captionMatch ? `<p class="caption">${captionMatch[1]}</p>` : ''}
             </div>
         `;

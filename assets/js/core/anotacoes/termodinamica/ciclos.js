@@ -4,7 +4,7 @@ export const content = `
 \\subsection*{Ciclo de Carnot}
 
 \\begin{figure}
-    \\includegraphics[width=0.45\\textwidth]{anotacoes/termodinamica/figures/ciclo-carnot.png}
+    \\includegraphics[width=0.45\\textwidth]{anotacoes/termodinamica/figures/carnot.png}
     \\caption{Diagrama T-s do Ciclo de Carnot}
     \\label{fig:carnot}
 \\end{figure}

@@ -14,6 +14,12 @@ const modulesConfig = {
                 path: "./anotacoes/termodinamica/ciclos.js", 
                 type: "note" 
             }
+        },
+        "Engenharia de Alimentos": {
+            "Fermentação": { 
+                path: "./anotacoes/Engenharia de Alimentos/Fermentação Pizza.js", 
+                type: "note" 
+            }
         }
     }
 };
@@ -75,15 +81,14 @@ async function loadContent(config) {
         `;
     }
 }
-// Renderizador LaTeX básico
 function renderLatexContent(content) {
-    // 1. Processa listas (ambiente itemize)
-    content = content.replace(/\\begin\{itemize\}(.*?)\\end\{itemize\}/gs, (match, items) => {
+    // 1. Processa listas (ambientes itemize e enumerate)
+    content = content.replace(/\\begin\{(itemize|enumerate)\}(.*?)\\end\{\1\}/gs, (match, env, items) => {
         const listItems = items.split('\\item')
             .filter(item => item.trim()) // Remove itens vazios
             .map(item => `<li>${item.trim()}</li>`)
             .join('');
-        return `<ul>${listItems}</ul>`;
+        return env === 'enumerate' ? `<ol>${listItems}</ol>` : `<ul>${listItems}</ul>`;
     });
 
     // 2. Processa seções

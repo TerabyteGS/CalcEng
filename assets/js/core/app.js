@@ -88,20 +88,44 @@ async function loadContent(config) {
     }
 }
 function renderLatexContent(content) {
-    // 1. Processa listas (ambientes itemize e enumerate)
-    content = content.replace(/\\begin\{(itemize|enumerate)\}(.*?)\\end\{\1\}/gs, (match, env, items) => {
-        const listItems = items.split('\\item')
-            .filter(item => item.trim()) // Remove itens vazios
-            .map(item => `<li>${item.trim()}</li>`)
-            .join('');
-        return env === 'enumerate' ? `<ol>${listItems}</ol>` : `<ul>${listItems}</ul>`;
-    });
+    // Primeiro processa listas aninhadas (começando pelas mais internas)
+    content = processNestedLists(content);
+    
+    // Depois processa o resto do conteúdo
+    content = processSectionsAndFormatting(content);
+    
+    return content;
+}
 
+function processNestedLists(content) {
+    // Processa listas de dentro para fora
+    let lastContent;
+    do {
+        lastContent = content;
+        content = content.replace(/\\begin\{(itemize|enumerate)\}(.*?)\\end\{\1\}/gs, (match, env, items) => {
+            const listItems = items.split('\\item')
+                .filter(item => item.trim()) // Remove itens vazios
+                .map(item => {
+                    // Processa qualquer formatação dentro do item
+                    let processedItem = item.trim()
+                        .replace(/\\textbf\{(.*?)\}/g, '<strong>$1</strong>')
+                        .replace(/\\textit\{(.*?)\}/g, '<em>$1</em>');
+                    return `<li>${processedItem}</li>`;
+                })
+                .join('');
+            return env === 'enumerate' ? `<ol>${listItems}</ol>` : `<ul>${listItems}</ul>`;
+        });
+    } while (content !== lastContent); // Repete até não haver mais mudanças
+    
+    return content;
+}
+
+function processSectionsAndFormatting(content) {
     // 2. Processa seções
     content = content.replace(/\\section\*?\{(.*?)\}/g, '<h2>$1</h2>');
     content = content.replace(/\\subsection\*?\{(.*?)\}/g, '<h3>$1</h3>');
 
-    // 3. Processa formatação de texto
+    // 3. Processa formatação de texto (para texto fora das listas)
     content = content.replace(/\\textbf\{(.*?)\}/g, '<strong>$1</strong>');
     content = content.replace(/\\textit\{(.*?)\}/g, '<em>$1</em>');
 
@@ -109,12 +133,11 @@ function renderLatexContent(content) {
     content = content.replace(/\\\[(.*?)\\\]/gs, '<div class="math-display">\\[$1\\]</div>');
     content = content.replace(/\\\((.*?)\\\)/gs, '<span class="math-inline">\\($1\\)</span>');
 
-    // 5. Processa figuras (com tratamento especial para caminhos)
+    // 5. Processa figuras
     content = content.replace(/\\begin\{figure\}(.*?)\\end\{figure\}/gs, (match, figContent) => {
         const imgMatch = figContent.match(/\\includegraphics\[.*?\]\{(.*?)\}/);
         const captionMatch = figContent.match(/\\caption\{(.*?)\}/);
         
-        // Corrige caminho da imagem para o padrão do seu projeto
         let imgPath = imgMatch ? imgMatch[1] : '';
         imgPath = imgPath.replace('anotacoes/', './assets/js/core/anotacoes/');
         
@@ -128,6 +151,7 @@ function renderLatexContent(content) {
 
     return content;
 }
+
 function generateMenu() {
     const menuContainer = document.getElementById('main-menu');
     if (!menuContainer) return;

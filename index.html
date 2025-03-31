@@ -105,18 +105,23 @@
     <!-- Sidebar Navigation -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <h2>Engenharia Química - Gabriel</h2>
+            <h2>Engenharia Química</h2>
         </div>
         <ul class="sidebar-menu">
             <li class="active" onclick="showCalculator('thermo')">
                 <i class="fas fa-fire"></i> Termodinâmica
             </li>
             <li onclick="showCalculator('transport')">
-                <i class="fas fa-tint"></i> Fenômenos de Transporte
+                <i class="fas fa-tint"></i> Reador CSTR
             </li>
             <li onclick="showCalculator('operations')">
-                <i class="fas fa-flask"></i> Operações Unitárias
+                <i class="fas fa-flask"></i> Reador PFR
             </li>
+            <li onclick="showCalculator('heat')">
+                <i class="fas fa-flask"></i> Trocador de Calor
+            </li>
+
+
         </ul>
     </div>
 
@@ -142,32 +147,76 @@
             <div id="thermo-graph"></div>
         </div>
 
-        <!-- Fenômenos de Transporte Calculator -->
+     
+     
+
+        <!-- CSTR -->
         <div id="transport" class="calculator">
-            <h2><i class="fas fa-tint"></i> Calculadora de Transporte</h2>
-            <p>Calcule perda de carga em tubulações.</p>
-            
+            <h2><i class="fas fa-tint"></i> Reator CSTR</h2>
             <div class="input-group">
-                <label for="pipe-diameter">Diâmetro da tubulação (m):</label>
-                <input type="number" id="pipe-diameter" value="0.1" step="0.01" min="0.01">
+                <label for="cstr-CA0">Concentração Inicial (CA₀, mol/L):</label>
+                <input type="number" id="cstr-CA0" value="1.0" step="0.1" min="0.1">
             </div>
-            
+            <div class="input-group">
+                <label for="cstr-k">Constante Cinética (k, min⁻¹):</label>
+                <input type="number" id="cstr-k" value="0.5" step="0.01" min="0.01">
+            </div>
+            <div class="input-group">
+                <label for="cstr-tau">Tempo Espacial (τ, min):</label>
+                <input type="number" id="cstr-tau" value="2.0" step="0.1" min="0.1">
+            </div>
             <button onclick="calculateTransport()">Calcular</button>
             <div id="transport-graph"></div>
         </div>
 
-        <!-- Operações Unitárias Calculator -->
+        <!-- PFR -->
         <div id="operations" class="calculator">
-            <h2><i class="fas fa-flask"></i> Calculadora de Operações Unitárias</h2>
-            <p>Simule eficiência de colunas de destilação.</p>
-            
+            <h2><i class="fas fa-flask"></i> Reator PFR</h2>
             <div class="input-group">
-                <label for="op-stages">Número de pratos teóricos:</label>
-                <input type="number" id="op-stages" value="5" min="1" max="20">
+                <label for="pfr-CA0">Concentração Inicial (CA₀, mol/L):</label>
+                <input type="number" id="pfr-CA0" value="1.0" step="0.1" min="0.1">
             </div>
-            
+            <div class="input-group">
+                <label for="pfr-k">Constante Cinética (k, min⁻¹):</label>
+                <input type="number" id="pfr-k" value="0.3" step="0.01" min="0.01">
+            </div>
+            <div class="input-group">
+                <label for="pfr-length">Comprimento do Reator (L, m):</label>
+                <input type="number" id="pfr-length" value="5.0" step="0.1" min="0.5">
+            </div>
             <button onclick="calculateOperations()">Calcular</button>
             <div id="operations-graph"></div>
+        </div>
+
+        <!-- Trocador de Calor -->
+        <div id="heat" class="calculator">
+            <h2><i class="fas fa-fire"></i> Trocador Bitubular</h2>
+            <div class="input-group">
+                <label for="he-mass-flow">Vazão Mássica (kg/s):</label>
+                <input type="number" id="he-mass-flow" value="0.5" step="0.01" min="0.01">
+            </div>
+            <div class="input-group">
+                <label for="he-Cp">Calor Específico (kJ/kg.K):</label>
+                <input type="number" id="he-Cp" value="4.18" step="0.01" min="0.1">
+            </div>
+            <div class="input-group">
+                <label for="he-Tin">Temperatura Entrada (°C):</label>
+                <input type="number" id="he-Tin" value="90" step="1" min="0">
+            </div>
+            <div class="input-group">
+                <label for="he-Tout">Temperatura Saída (°C):</label>
+                <input type="number" id="he-Tout" value="50" step="1" min="0">
+            </div>
+            <div class="input-group">
+                <label for="he-U">Coeficiente Global (W/m².K):</label>
+                <input type="number" id="he-U" value="500" step="10" min="100">
+            </div>
+            <div class="input-group">
+                <label for="he-DTlm">ΔT<sub>lm</sub> (K):</label>
+                <input type="number" id="he-DTlm" value="30" step="1" min="1">
+            </div>
+            <button onclick="calculateHeatExchange()">Calcular</button>
+            <div id="heat-graph"></div>
         </div>
     </div>
 

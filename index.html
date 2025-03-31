@@ -3,28 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora do Engenheiro</title>
-    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <title>Engenharia Química - Calculadoras e Anotações</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    
+    <!-- MathJax alternativo sem dependência de polyfill.io -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 </head>
 <body>
-    <!-- Sidebar Navigation -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h2>Engenharia Química</h2>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Engenharia Química</h2>
+            </div>
+            <ul class="sidebar-menu" id="main-menu">
+                <!-- Menu será gerado dinamicamente -->
+            </ul>
         </div>
-        <ul class="sidebar-menu" id="main-menu">
-            <!-- Menu será gerado dinamicamente via JavaScript -->
-        </ul>
+
+        <!-- Main Content Area -->
+        <div class="main-content" id="content-container">
+            <div class="welcome-message">
+                <h1>Bem-vindo ao Sistema de Engenharia Química</h1>
+                <p>Selecione uma calculadora ou anotação no menu ao lado.</p>
+            </div>
+        </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content" id="calculator-container">
-        <!-- Conteúdo será injetado dinamicamente -->
-    </div>
-
-    <!-- Carrega todos os módulos JS -->
+    <!-- Plotly para gráficos -->
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    
+    <!-- Seu arquivo JavaScript principal -->
     <script src="assets/js/core/app.js" type="module"></script>
+    
+    <!-- Script de suporte para MathJax -->
+    <script>
+        // Função global para renderização de equações
+        window.renderMathJax = function() {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                return MathJax.typesetPromise();
+            }
+            return Promise.resolve();
+        };
+    </script>
 </body>
 </html>

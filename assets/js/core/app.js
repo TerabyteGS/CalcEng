@@ -1,92 +1,200 @@
 // Configuração dos módulos
 const modulesConfig = {
-    "Termodinâmica": {
-        "Destilação Binária": "termodinamica/destilacao.js",
-        "Equilíbrio de Fases": "termodinamica/equilibrio-fases.js"
+    "Calculadoras": {
+        "Termodinâmica": {
+            "Destilação Binária": { 
+                path: "./termodinamica/destilacao.js", 
+                type: "calculator" 
+            }
+        }
     },
-    "Fenômenos de Transporte": {
-        "Perda de Carga": "fenomenos-transporte/perda-carga.js",
-        "Reator CSTR": "fenomenos-transporte/cstr.js"
-    },
-    "Operações Unitárias": {
-        "Reator PFR": "operacoes-unitarias/pfr.js",
-        "Trocador de Calor": "operacoes-unitarias/trocador-calor.js"
+    "Anotações": {
+        "Termodinâmica": {
+            "Ciclos Termodinâmicos": { 
+                path: "./anotacoes/termodinamica/ciclos.js", 
+                type: "note" 
+            }
+        }
     }
 };
 
-// Gera o menu dinamicamente
-function generateMenu() {
-    const menuContainer = document.getElementById('main-menu');
-    
-    for (const [category, calculators] of Object.entries(modulesConfig)) {
-        const categoryItem = document.createElement('li');
-        categoryItem.innerHTML = `<i class="fas fa-folder"></i> ${category}`;
-        categoryItem.classList.add('category');
-        
-        const submenu = document.createElement('ul');
-        submenu.classList.add('submenu');
-        
-        for (const [name, path] of Object.entries(calculators)) {
-            const calculatorItem = document.createElement('li');
-            calculatorItem.textContent = name;
-            calculatorItem.dataset.path = path;
-            calculatorItem.classList.add('calculator-item');
-            submenu.appendChild(calculatorItem);
-        }
-        
-        categoryItem.appendChild(submenu);
-        menuContainer.appendChild(categoryItem);
-        
-        // Adiciona evento de clique para expandir/recolher
-        categoryItem.addEventListener('click', (e) => {
-            if (e.target === categoryItem) {
-                submenu.classList.toggle('expanded');
-                categoryItem.querySelector('i').classList.toggle('fa-folder-open');
-                categoryItem.querySelector('i').classList.toggle('fa-folder');
-            }
-        });
+// Carregador de conteúdo robusto
+async function loadContent(config) {
+    const container = document.getElementById('content-container');
+    if (!container) {
+        console.error('Container principal não encontrado!');
+        return;
     }
-    
-    // Adiciona eventos aos itens de calculadora
-    document.querySelectorAll('.calculator-item').forEach(item => {
-        item.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            await loadCalculator(e.target.dataset.path);
-        });
-    });
-}
 
-// Carrega dinamicamente o módulo da calculadora
-async function loadCalculator(modulePath) {
     try {
-        // Remove o módulo anterior se existir
-        if (window.currentModule) {
-            delete window.currentModule;
-        }
+        container.innerHTML = '<div class="loader">Carregando...</div>';
         
-        // Carrega o novo módulo
-        const module = await import(`./${modulePath}`);
-        window.currentModule = module;
+        // Debug: Mostra o caminho que está tentando carregar
+        console.log(`Tentando carregar: ${config.path}`);
         
-        // Renderiza a interface
-        document.getElementById('calculator-container').innerHTML = module.getInterface();
-        
-        // Inicializa a calculadora
-        if (module.init) {
-            module.init();
+        if (config.type === 'calculator') {
+            // Adiciona timestamp para evitar cache
+            const module = await import(`${config.path}?t=${Date.now()}`);
+            
+            if (!module.getInterface) {
+                throw new Error('Módulo não exporta getInterface()');
+            }
+            
+            container.innerHTML = module.getInterface();
+            
+            if (module.init) {
+                await module.init();
+            }
+        } 
+        else if (config.type === 'note') {
+            const module = await import(`${config.path}?t=${Date.now()}`);
+            
+            if (!module.content) {
+                throw new Error('Módulo não exporta content');
+            }
+            
+            container.innerHTML = `
+                <div class="note-viewer">
+                    ${renderLatexContent(module.content)}
+                </div>
+            `;
+            
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                await MathJax.typesetPromise();
+            }
         }
     } catch (error) {
-        console.error(`Erro ao carregar o módulo: ${error}`);
-        document.getElementById('calculator-container').innerHTML = `
+        console.error('Erro detalhado ao carregar:', error);
+        container.innerHTML = `
             <div class="error">
-                <h3>Erro ao carregar a calculadora</h3>
+                <h3>Erro ao carregar conteúdo</h3>
                 <p>${error.message}</p>
+                <p>Caminho tentado: ${config.path}</p>
+                <button onclick="location.reload()">Recarregar Página</button>
             </div>
         `;
     }
 }
+// Renderizador LaTeX básico
+function renderLatexContent(content) {
+    // Processa ambientes itemize
+    content = content.replace(/\\begin\{itemize\}(.*?)\\end\{itemize\}/gs, (match, items) => {
+        const listItems = items.split('\\item')
+            .filter(item => item.trim())
+            .map(item => `<li>${item.trim()}</li>`)
+            .join('');
+        return `<ul>${listItems}</ul>`;
+    });
 
-// Inicialização da aplicação
+    // Processa seções e subseções
+    content = content.replace(/\\section\*?\{(.*?)\}/g, '<h2>$1</h2>');
+    content = content.replace(/\\subsection\*?\{(.*?)\}/g, '<h3>$1</h3>');
+
+    // Processa texto em negrito e itálico
+    content = content.replace(/\\textbf\{(.*?)\}/g, '<strong>$1</strong>');
+    content = content.replace(/\\textit\{(.*?)\}/g, '<em>$1</em>');
+
+    // Processa equações
+    content = content.replace(/\\\[(.*?)\\\]/gs, '<div class="math-display">\\[$1\\]</div>');
+    content = content.replace(/\\\((.*?)\\\)/gs, '<span class="math-inline">\\($1\\)</span>');
+
+    // Processa figuras
+    content = content.replace(/\\begin\{figure\}(.*?)\\end\{figure\}/gs, (match, figContent) => {
+        const imgMatch = figContent.match(/\\includegraphics\[.*?\]\{(.*?)\}/);
+        const captionMatch = figContent.match(/\\caption\{(.*?)\}/);
+        const labelMatch = figContent.match(/\\label\{(.*?)\}/);
+        
+        return `
+            <div class="figure">
+                ${imgMatch ? `<img src="${imgMatch[1]}" alt="${captionMatch?.[1] || ''}">` : ''}
+                ${captionMatch ? `<p class="caption">${captionMatch[1]}</p>` : ''}
+            </div>
+        `;
+    });
+
+    return content;
+}
+function generateMenu() {
+    const menuContainer = document.getElementById('main-menu');
+    if (!menuContainer) return;
+
+    // Limpa o menu existente
+    menuContainer.innerHTML = '';
+
+    for (const [mainCategory, subCategories] of Object.entries(modulesConfig)) {
+        // Cria item da categoria principal
+        const categoryItem = document.createElement('li');
+        categoryItem.className = 'category';
+        categoryItem.innerHTML = `
+            <i class="fas fa-folder"></i> ${mainCategory}
+            <i class="fas fa-chevron-down arrow"></i>
+        `;
+
+        // Cria submenu
+        const submenu = document.createElement('ul');
+        submenu.className = 'submenu';
+
+        for (const [subCategory, items] of Object.entries(subCategories)) {
+            // Cria item da subcategoria
+            const subItem = document.createElement('li');
+            subItem.className = 'subcategory';
+            subItem.innerHTML = `
+                <i class="fas fa-folder"></i> ${subCategory}
+                <i class="fas fa-chevron-down arrow"></i>
+            `;
+
+            // Cria lista de itens
+            const itemsList = document.createElement('ul');
+            itemsList.className = 'items-list';
+
+            for (const [itemName, config] of Object.entries(items)) {
+                const item = document.createElement('li');
+                item.innerHTML = `
+                    <i class="fas ${config.type === 'note' ? 'fa-file-alt' : 'fa-calculator'}"></i> 
+                    ${itemName}
+                `;
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    loadContent(config);
+                });
+                itemsList.appendChild(item);
+            }
+
+            // Adiciona evento para expandir/recolher subcategorias
+            subItem.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const arrow = subItem.querySelector('.arrow');
+                itemsList.classList.toggle('expanded');
+                arrow.classList.toggle('fa-chevron-down');
+                arrow.classList.toggle('fa-chevron-up');
+            });
+
+            subItem.appendChild(itemsList);
+            submenu.appendChild(subItem);
+        }
+
+        // Adiciona evento para expandir/recolher categorias principais
+        categoryItem.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const arrow = categoryItem.querySelector('.arrow');
+            submenu.classList.toggle('expanded');
+            arrow.classList.toggle('fa-chevron-down');
+            arrow.classList.toggle('fa-chevron-up');
+        });
+
+        categoryItem.appendChild(submenu);
+        menuContainer.appendChild(categoryItem);
+    }
+}
+
+// Inicialização segura
 document.addEventListener('DOMContentLoaded', () => {
     generateMenu();
+    
+    // Carrega conteúdo inicial se houver parâmetro na URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialContent = urlParams.get('content');
+    if (initialContent) {
+        // Lógica para carregar conteúdo baseado na URL
+    }
 });

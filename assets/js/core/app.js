@@ -130,35 +130,39 @@ function processQuotes(content) {
 }
 
 function processTables(content) {
-    return content.replace(/\\begin\{table\}.*?\[.*?\](.*?)\\end\{table\}/gs, (match, tableContent) => {
-        // Extrai caption
+    return content.replace(/\\begin\{table\}([\s\S]*?)\\end\{table\}/gs, (match, tableContent) => {
+        // Extrai caption (com tratamento para [h] ou outros parâmetros)
         const captionMatch = tableContent.match(/\\caption\{(.*?)\}/);
         const caption = captionMatch ? `<caption>${captionMatch[1]}</caption>` : '';
         
-        // Processa o conteúdo tabular
-        const tabularMatch = tableContent.match(/\\begin\{tabular\}(.*?)(.*?)\\end\{tabular\}/s);
+        // Processa o conteúdo tabular (regex mais robusta)
+        const tabularMatch = tableContent.match(/\\begin\{tabular\}(.*?)\s*([\s\S]*?)\\end\{tabular\}/);
         if (!tabularMatch) return '';
-        
+
         const alignment = tabularMatch[1];
         const rows = tabularMatch[2].split('\\\\').filter(row => row.trim());
         
-        // Processa linhas da tabela
+        // Processa linhas da tabela com tratamento melhor para hlines
         const processedRows = rows.map(row => {
+            // Remove \hline se existir
+            row = row.replace(/\\hline/g, '');
+            
             const cells = row.split('&').map(cell => {
                 let processedCell = cell.trim()
                     .replace(/\\textbf\{(.*?)\}/g, '<strong>$1</strong>')
-                    .replace(/\\textit\{(.*?)\}/g, '<em>$1</em>');
+                    .replace(/\\textit\{(.*?)\}/g, '<em>$1</em>')
+                    .replace(/\\hline/g, '');
                 return `<td>${processedCell}</td>`;
             }).join('');
             
             return `<tr>${cells}</tr>`;
         }).join('');
-        
+
         return `
             <div class="latex-table">
                 <table>
                     ${caption}
-                    ${processedRows}
+                    <tbody>${processedRows}</tbody>
                 </table>
             </div>
         `;
@@ -192,6 +196,7 @@ function processSectionsAndFormatting(content) {
     // Processa seções
     content = content.replace(/\\section\*?\{(.*?)\}/g, '<h2>$1</h2>');
     content = content.replace(/\\subsection\*?\{(.*?)\}/g, '<h3>$1</h3>');
+    content = content.replace(/\\subsubsection\*?\{(.*?)\}/g, '<h4>$1</h4>'); 
 
     // Processa formatação de texto
     content = content.replace(/\\textbf\{(.*?)\}/g, '<strong>$1</strong>');

@@ -100,21 +100,16 @@ Jameson estabelece três princípios fundamentais:
 
 \\subsubsection{Exemplos Históricos de Contradições}
 
-\\begin{table}[h]
-\\centering
-\\caption{Crises de supersaturação no capitalismo histórico}
-\\begin{tabular}{|l|l|l|}
-\\hline
-\\textbf{Período} & \\textbf{Setor} & \\textbf{Manifestação da Crise} \\
-\\hline
-1873-1896 & Indústria pesada & \\textit{Longa Depressão} \\
-1929 & Mercado acionário & Grande Depressão \\
-1970s & Petróleo/automóveis & Estagflação \\
-2008 & Mercado imobiliário & Crise dos \\textit{subprimes} \\
-2020s & Tech/VC & Colapso do SVB \\
-\\hline
-\\end{tabular}
-\\end{table}
+\\subsection{Crises de supersaturação no capitalismo histórico}
+
+Ao longo do capitalismo histórico, destacam-se cinco grandes crises de supersaturação:
+\\begin{itemize}
+    \\item Na virada do século XIX (1873-1896), a \\textbf{indústria pesada} enfrentou a \\textit{Longa Depressão};
+    \\item Em 1929, o colapso do \\textbf{mercado acionário} levou à Grande Depressão;
+    \\item Nos anos 1970, a crise do \\textbf{petróleo} e setor \\textbf{automotivo} gerou episódios de estagflação;
+    \\item Em 2008, o \\textbf{mercado imobiliário} norte-americano desencadeou a crise dos \\textit{subprimes};
+    \\item Já na década de 2020, o excesso na \\textbf{tecnologia} e Venture Capital (VC) levou ao colapso do SVB.
+\\end{itemize}
 
 \\subsection{Comentário Crítico}
 
@@ -252,28 +247,10 @@ Esta afirmação contém três dimensões teóricas fundamentais:
 \\end{quote}
 
 \\subsection{Periodização dos Centros}
-
-\\begin{table}[h]
-\\centering
-\\caption{Evolução dos centros hegemônicos}
-\\begin{tabularx}{\\textwidth}{|l|X|X|}
-\\hline
-\\textbf{Período} & \\textbf{Características} & \\textbf{Exemplo Empírico} \\\\
-\\hline
-\\textbf{Holandês} & Capitalismo comercial & Companhia das Índias Orientais \\\\
-(1600-1750) & Feitorias globais & Domínio do comércio de especiarias \\\\
-\\hline
-\\textbf{Britânico} & Capitalismo industrial & Oficinas têxteis de Manchester \\\\
-(1750-1914) & Imperialismo clássico & Exposição Universal de 1851 \\\\
-\\hline
-\\textbf{Americano} & Capitalismo de massa & Linha de montagem fordista \\\\
-(1945-2008) & Complexo industrial-militar & Shopping centers anos 1950 \\\\
-\\hline
-\\textbf{Multipolar} & Capitalismo digital & Plataformas GAFAM \\\\
-(pós-2008) & Financeirização global & Cadeias de valor fragmentadas \\\\
-\\hline
-\\end{tabularx}
-\\end{table}
+\\textbf{1. Ciclo Holandês (1600-1750)} inaugurou o capitalismo comercial, com feitorias globais como principal modelo de expansão. A Companhia das Índias Orientais exemplifica esse período, controlando rotas de especiarias com poder quasi-estatal.
+\\textbf{2. Hegemonia Britânica (1750-1914)} consolidou o capitalismo industrial, combinando produção fabril (como as oficinas têxteis de Manchester) com imperialismo clássico. A Exposição Universal de 1851 simbolizou seu apogeu tecnológico.
+\\textbf{3. Era Americana (1945-2008)} desenvolveu o capitalismo de massa através do fordismo (linhas de montagem) e do complexo industrial-militar. Seu lifestyle consumista materializou-se nos shopping centers da década de 1950.
+\\textbf{4. Fase Multipolar (pós-2008)} caracteriza-se pelo capitalismo digital das plataformas GAFAM e pela financeirização global, com cadeias produtivas fragmentadas e desterritorializadas.
 
 \\section{Mecanismos de Expansão}
 
@@ -444,21 +421,13 @@ Esta afirmação contém três dimensões teóricas fundamentais:
 
 \\textbf{Comentário}: A periodização mostra como cada fase do capitalismo se apoia em um paradigma tecnológico distinto:
 
-\\begin{table}[h]
-\\centering
-\\caption{Correspondência entre fases e tecnologias}
-\\begin{tabularx}{\\textwidth}{|l|X|X|}
-\\hline
-\\textbf{Fase} & \\textbf{Tecnologia} & \\textbf{Exemplo Contemporâneo} \\\\
-\\hline
-Capitalismo Nacional & Máquina a vapor & Indústrias têxteis inglesas \\\\
-\\hline
-Capitalismo Imperial & Eletricidade & Fordismo (linha de montagem) \\\\
-\\hline
-Capitalismo Multinacional & Digital & Plataformas (Meta, Tesla) \\\\
-\\hline
-\\end{tabularx}
-\\end{table}
+\\subsection{Correspondência entre fases e tecnologias}
+
+A evolução tecnológica acompanhou as transformações do capitalismo: na fase \\textbf{nacional} (século XIX), a \\textit{máquina a vapor} propulsionou as indústrias têxteis inglesas, criando as primeiras fábricas modernas. 
+
+No \\textbf{capitalismo imperial} (primeira metade do século XX), a \\textit{eletrificação} permitiu a produção em massa, simbolizada pelo fordismo e suas linhas de montagem automotiva. 
+
+Já no estágio \\textbf{multinacional} (século XXI), as tecnologias \\textit{digitais} reconfiguram a economia através de plataformas como Meta (redes sociais) e Tesla (mobilidade elétrica autônoma), representando a atual fronteira tecnoproductiva.
 
 \\section{Fragmento 3: Globalização Tecnológica}
 \\begin{quote}
@@ -564,19 +533,11 @@ Jameson recupera a definição clássica do socialismo como:
     \\end{itemize}
 \\end{itemize}
 
-\\begin{table}[h]
-\\centering
-\\caption{Estratégias discursivas neoliberais}
-\\begin{tabularx}{\\textwidth}{|l|X|X|}
-\\hline
-\\textbf{Estratégia} & \\textbf{Exemplo Global} & \\textbf{Exemplo Brasileiro} \\\\
-\\hline
-Naturalização do mercado & There is no alternative (Thatcher) & O estado é ineficiente por natureza \\\\
-\\hline
-Individualização & Crédito como solução para habitação & FGTS individualizado \\\\
-\\hline
-\\end{tabularx}
-\\end{table}
+\\subsection{Estratégias discursivas neoliberais}
+
+A \\textbf{naturalização do mercado} como única alternativa possível manifestou-se globalmente no lema thatcheriano "There is no alternative" (TINA), encontrando eco no Brasil através de narrativas que apresentam o Estado como "ineficiente por natureza". Essa retórica serve para justificar reformas de desmonte estatal.
+
+A estratégia de \\textbf{individualização} transforma questões estruturais em problemas pessoais: enquanto no plano global se promove o crédito imobiliário como solução para déficit habitacional, no Brasil observa-se a proposta de FGTS individualizado como panaceia para questões trabalhistas, transferindo para o trabalhador a responsabilidade por proteções sociais antes coletivas.
 
 \\subsection{2. Medo Antiutópico}
 \\begin{quote}
@@ -656,28 +617,9 @@ Individualização & Crédito como solução para habitação & FGTS individuali
 \\subsection{Mecanismos de Disqualificação}
 Jameson identifica seis estratégias principais:
 
-\\begin{table}[h]
-\\centering
-\\caption{Estratégias de deslegitimação discursiva}
-\\begin{tabularx}{\\textwidth}{|l|X|X|}
-\\hline
-\\textbf{Estratégia} & \\textbf{Definição} & \\textbf{Exemplo Contemporâneo} \\\\
-\\hline
-Trivialização & Reduzir ideias complexas a caricaturas & Comunismo = Venezuela fracassada \\\\
-\\hline
-Apelo à ingenuidade & Apresentar alternativas como ingênuas & Nacionalização é coisa de adolescente \\\\
-\\hline
-Interesse material & Associar propostas a perdas econômicas & Impostos vão aumentar seu custo de vida \\\\
-\\hline
-Experiência & Usar casos seletivos como prova & O socialismo nunca funcionou na história \\\\
-\\hline
-Medo político & Associar a riscos extremos & Vai virar uma Cuba \\\\
-\\hline
-Lições históricas & Manipulação de narrativas passadas & Veja o que aconteceu com a URSS \\\\
-\\hline
-\\end{tabularx}
-\\end{table}
+O discurso político contemporâneo utiliza diversas estratégias retóricas para deslegitimar alternativas. A \\textbf{trivialização} opera através da redução caricatural (como equiparar comunismo ao caso venezuelano), enquanto o \\textbf{apelo à ingenuidade} infantiliza propostas (taxando nacionalizações como "imaturo"). 
 
+A estratégia de \\textbf{interesse material} apela ao bolso ("isso aumentará seus impostos"), e o uso seletivo de \\textbf{experiência} histórica cria falsas generalizações ("socialismo nunca funcionou"). O \\textbf{medo político} associa mudanças a cenários extremos ("virará uma Cuba"), complementado pela manipulação de \\textbf{lições históricas} através de analogias simplistas ("veja o fim da URSS").
 \\section{Temas Silenciados}
 
 \\begin{quote}
@@ -797,23 +739,13 @@ Jameson identifica um paradoxo central:
 \\enquote{a esperança de mudança [...] foi substituída pelo terror da perda}
 \\end{quote}
 
-\\subsection{Mapeamento Histórico}
+\\subsection{Mapeamento Histórico das Disposições Políticas}
 
-\\begin{table}[h]
-\\centering
-\\caption{Mudança nas disposições políticas}
-\\begin{tabularx}{\\textwidth}{|l|X|X|}
-\\hline
-\\textbf{Período} & \\textbf{Disposição Dominante} & \\textbf{Expressão Política} \\\\
-\\hline
-Pós-guerra (1945-1970) & Esperança reformista & Estado de bem-estar social \\\\
-\\hline
-Neoliberal (1980-2008) & Individualismo & Thatcherismo/Reaganismo \\\\
-\\hline
-Pós-crise (2008-) & Medo da perda & Populismos de direita \\\\
-\\hline
-\\end{tabularx}
-\\end{table}
+O período \\textbf{pós-guerra (1945-1970)} foi marcado por uma \\textbf{disposição esperançosa} e reformista, materializada na construção de \\textbf{Estados de bem-estar social} que prometiam progresso coletivo. 
+
+A virada para o \\textbf{neoliberalismo (1980-2008)} transformou radicalmente essa disposição, substituindo-a por um \\textbf{individualismo radical} que encontrou sua máxima expressão no thatcherismo e reaganismo, com sua fé dogmática nos mercados. 
+
+Desde a \\textbf{crise de 2008}, predomina uma \\textbf{disposição temerosa} de perda de privilégios, que alimenta os \\textbf{populismos de direita} contemporâneos, convertendo ansiedades sociais em projetos políticos reacionários.
 
 \\textbf{Caso brasileiro}:
 \\begin{itemize}
@@ -933,21 +865,11 @@ Jameson identifica um duplo desafio:
 \\enquote{precisamos abandonar à iconologia tudo o que sugere que a revolução é um momento pontual em vez de um processo elaborado e complexo.}
 \\end{quote}
 
-\\subsection{Análise Comparativa}
 
-\\begin{table}[h]
-\\centering
-\\caption{Modelos de revolução}
-\\begin{tabularx}{\\textwidth}{|l|X|X|}
-\\hline
-\\textbf{Modelo} & \\textbf{Características} & \\textbf{Exemplo Histórico} \\\\
-\\hline
-Evento pontual & Ação decisiva em momento crítico & Tomada da Bastilha (1789) \\\\
-\\hline
-Processo contínuo & Transformações estruturais prolongadas & Revolução Cubana (1953-1971) \\\\
-\\hline
-\\end{tabularx}
-\\end{table}
+
+\\subsection{Análise Comparativa dos Modelos Revolucionários}
+
+A história das revoluções apresenta pelo menos dois padrões distintos: o modelo de \\textbf{evento pontual}, exemplificado pela Tomada da Bastilha (1789), onde uma ação decisiva em momento crítico desencadeia mudança imediata; e o modelo de \\textbf{processo contínuo}, ilustrado pela Revolução Cubana (1953-1971), envolvendo uma sequência prolongada de eventos que reconfiguram gradualmente as estruturas sociais, políticas e econômicas.
 
 \\textbf{Caso brasileiro}:
 \\begin{itemize}
@@ -977,11 +899,6 @@ Processo contínuo & Transformações estruturais prolongadas & Revolução Cuba
     \\end{itemize}
 \\end{itemize}
 
-\\begin{figure}[h]
-\\centering
-\\includegraphics[width=0.7\\textwidth]{iconografia_revolucionaria.png}
-\\caption{Desconstrução das imagens icônicas (Fonte: Elaboração própria)}
-\\end{figure}
 
 \\section{Implicações para o Século XXI}
 

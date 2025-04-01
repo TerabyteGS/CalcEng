@@ -82,6 +82,7 @@ A nova fase do marxismo deve considerar:
 \\section{A Ciência Marxista das Contradições Capitalistas}
 
 \\subsection{Texto Original}
+
 \\begin{quote}
 \\enquote{O marxismo é a ciência do capitalismo, ou melhor, para dar profundidade a ambos os termos, é a ciência das contradições inerentes ao capitalismo. Isso significa, por um lado, que é incoerente celebrar a \\enquote{morte do marxismo} ao mesmo tempo em que se anuncia o triunfo definitivo do capitalismo e do mercado. [...] Por exemplo, em qualquer momento do capitalismo, o espaço que ele controla acabará ficando supersaturado com as mercadorias que ele é tecnicamente capaz de produzir. Essa crise é então sistêmica.}
 \\end{quote}

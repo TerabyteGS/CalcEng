@@ -41,7 +41,18 @@ async function loadContent(config) {
         console.log(`Tentando carregar: ${config.path}`);
         
         if (config.type === 'calculator') {
-            // ... código existente para calculadoras ...
+            
+            const module = await import(`${config.path}?t=${Date.now()}`);
+
+            if (!module.getInterface) {
+                throw new Error('Módulo não exporta getInterface()');
+            }
+
+            container.innerHTML = module.getInterface();
+
+            if (module.init) {
+                await module.init();
+            }
         } 
         else if (config.type === 'note') {
             // Adicione tratamento especial para nomes de arquivos com espaços

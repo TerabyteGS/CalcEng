@@ -130,8 +130,8 @@ body {
 }
 
 .note-viewer ul, .note-viewer ol {
-    padding-left: 30px;
-    margin: 15px 0;
+    padding-left: 1.5em;
+    margin-left: 0;
 }
 
 .note-viewer li {
@@ -209,9 +209,26 @@ body {
 
 /* Listas mais legíveis */
 .note-viewer ul, .note-viewer ol {
-    margin-left: 1.5em;
+    margin-left: 0;
     margin-bottom: 1.2em;
 }
+
+.note-viewer ul ul, .note-viewer ol ol {
+    padding-left: 0; /* Controle da indentação aninhada */
+    margin-left: 5;
+}
+
+/* Garantia para listas aninhadas */
+.note-viewer ul ul, .note-viewer ol ol {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.note-viewer li {
+    margin-left: 0;
+    padding-left: 0;
+}
+
 
 .note-viewer li {
     margin-bottom: 0.6em;
@@ -231,6 +248,7 @@ body {
     padding: 0.2em 0.4em;
     border-radius: 3px;
 }
+
 
 /* Figura com estilo */
 .figure {
@@ -252,5 +270,40 @@ body {
     padding: 0.2em 0.4em;
     border-radius: 3px;
     font-size: 0.95rem;
+}
+
+/* RESET DE INDENTAÇÃO PARA SEÇÕES */
+.latex-section-reset {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    clear: both;
+}
+
+/* ESTILO PADRÃO PARA LISTAS */
+.latex-list {
+    margin-left: 1.5rem;
+    padding-left: 1rem;
+    list-style-position: outside;
+}
+
+
+/* PRESERVA HIERARQUIA DE LISTAS ANINHADAS */
+.latex-list .latex-list {
+    margin-left: 0; /* Valor fixo */
+    padding-left: 0;
+}
+
+/* RESET DE ITENS */
+.latex-list li {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.latex-list.itemize {
+    list-style-type: disc;
+}
+
+.latex-list.enumerate {
+    list-style-type: decimal;
 }
 

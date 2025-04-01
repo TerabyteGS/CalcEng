@@ -93,6 +93,7 @@ async function loadContent(config) {
 
 
 
+
 function renderLatexContent(content) {
     if (typeof content !== 'string') {
         console.error('Conteúdo não é uma string:', content);
@@ -100,16 +101,20 @@ function renderLatexContent(content) {
     }
 
     try {
-        // Processa citações primeiro
+        // Processa primeiro os comandos especiais como \rightarrow
+        content = content.replace(/\\rightarrow/g, '→');
+        
+        // Processa equações matemáticas inline
+        content = content.replace(/\$(.*?)\$/g, '<span class="math-inline">$1</span>');
+        
+        // Processa negrito e itálico
+        content = content.replace(/\\textbf\{(.*?)\}/g, '<strong>$1</strong>');
+        content = content.replace(/\\textit\{(.*?)\}/g, '<em>$1</em>');
+        
+        // Continua com o resto do processamento
         content = processQuotes(content);
-        
-        // Processa listas aninhadas
         content = processNestedLists(content);
-        
-        // Processa tabelas
         content = processTables(content);
-        
-        // Processa seções e formatação
         content = processSectionsAndFormatting(content);
         
         return content;
@@ -118,7 +123,6 @@ function renderLatexContent(content) {
         return `<div class="error">Erro de renderização: ${e.message}</div>`;
     }
 }
-
 function processQuotes(content) {
     return content.replace(/\\begin\{quote\}([\s\S]*?)\\end\{quote\}/g, (match, quoteContent) => {
         const processed = quoteContent
@@ -175,17 +179,21 @@ function processNestedLists(content) {
     let lastContent;
     do {
         lastContent = content;
-        content = content.replace(/\\begin\{(itemize|enumerate)\}(.*?)\\end\{\1\}/gs, (match, env, items) => {
+        content = content.replace(/\\begin\{(itemize|enumerate)\}(.*?)\\end\{\1\}/gs, 
+        (match, env, items) => {
             const listItems = items.split('\\item')
-                .filter(item => item.trim())
+                .slice(1) // Remove o primeiro item vazio
                 .map(item => {
-                    let processedItem = item.trim()
+                    const processed = item.trim()
                         .replace(/\\textbf\{(.*?)\}/g, '<strong>$1</strong>')
                         .replace(/\\textit\{(.*?)\}/g, '<em>$1</em>');
-                    return `<li>${processedItem}</li>`;
+                    return `<li class="latex-li">${processed}</li>`;
                 })
                 .join('');
-            return env === 'enumerate' ? `<ol>${listItems}</ol>` : `<ul>${listItems}</ul>`;
+            
+            return `<div class="latex-list-container ${env}">${
+                env === 'enumerate' ? `<ol>${listItems}</ol>` : `<ul>${listItems}</ul>`
+            }</div>`;
         });
     } while (content !== lastContent);
     

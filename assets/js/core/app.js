@@ -26,7 +26,30 @@ const modulesConfig = {
                 path: "./anotacoes/filosofia/OutrasPalvras - 5 teses do Marxismo.js", 
                 type: "note" 
             }
-        }
+        
+        },
+
+        "Eletrônica": {
+            "Codec e DAC": { 
+                path: "./anotacoes/eletronica/Codec Som.js", 
+                type: "note" 
+            }
+        },
+
+        "Leituras": {
+            "As veias abertas da América Laitina": { 
+                path: "./anotacoes/Leituras/Eduardo Galeano.js", 
+                type: "note" 
+            },
+            "Fernando Pessoa": { 
+                path: "./anotacoes/Leituras/Fernando Pessoa.js", 
+                type: "note" 
+            },
+            "Clarice Lispector": { 
+                path: "./anotacoes/Leituras/Clarice Lispector.js", 
+                type: "note" 
+            }
+        },
     }
 };
 
@@ -172,8 +195,6 @@ function processTables(content) {
         `;
     });
 }
-
-
 
 function processNestedLists(content) {
     let lastContent;

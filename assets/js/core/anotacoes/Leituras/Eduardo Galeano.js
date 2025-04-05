@@ -1,0 +1,15 @@
+export const content = `
+As Veias Abertas da América Latina de Eduardo Galeano, faz uma crítica contundente ao sistema econômico internacional e suas consequências históricas para a América Latina. O autor afirma que, desde a colonização, a região foi destinada a perder: enquanto as potências europeias (e mais tarde os Estados Unidos) enriqueceram com os recursos naturais e humanos da América Latina, os povos latino-americanos ficaram com a pobreza e a dependência.
+
+A “divisão internacional do trabalho” é apresentada de forma desigual: enquanto alguns países “ganham”, outros são destinados a fornecer matéria-prima, mão de obra barata e mercados consumidores. A metáfora das “veias abertas” representa a constante extração de riquezas e a perpetuação de um sistema de exploração e subdesenvolvimento, cujas raízes são coloniais, mas que seguem operando no presente, sob o disfarce do “livre-comércio”.
+
+Galeano também denuncia o imperialismo econômico e cultural, que molda as estruturas sociais, políticas e até a identidade da América Latina. A imposição de funções econômicas específicas, a submissão das elites locais aos interesses estrangeiros e a perda até do nome “América” ilustram a profundidade dessa dominação.
+
+Por fim, ele questiona a ideia de que o subdesenvolvimento seja um fracasso interno: para Galeano, ele é uma consequência direta do sucesso das potências, numa lógica em que a pobreza de uns sustenta a riqueza de outros. Assim, o texto não é apenas histórico, mas também político e moral, um apelo por justiça e consciência histórica.
+
+\\begin{quote}
+Para os que concebem a História como uma contenda, o atraso e a miséria da América Latina não são outra coisa senão o resultado de seu fracasso. Perdemos; outros ganharam. Mas aqueles que ganharam só puderam ganhar porque perdemos: a história do subdesenvolvimento da América Latina integra, como já foi dito, a história do desenvolvimento do capitalismo mundial. Nossa derrota esteve sempre implícita na vitória dos outros. Nossa riqueza sempre gerou nossa pobreza por nutrir a prosperidade alheia: os impérios e seus beleguins nativos. Na alquimia colonial e neocolonial o ouro se transfigura em sucata, os alimentos em veneno. Potosí, Zacatecas e Ouro Preto caíram de ponta-cabeça da grimpa de esplendores dos metais preciosos no fundo buraco dos socavões vazios, e a ruína foi o destino do pampa chileno do salitre e da floresta amazônica da borracha; o nordeste açucareiro do Brasil, as matas argentinas de quebrachos ou certos povoados petrolíferos do lago de Maracaibo têm dolorosas razões para acreditar na mortalidade das fortunas que a natureza dá e o imperialismo toma. A chuva que irriga os centros do poder imperialista afoga os vastos subúrbios do sistema. Do mesmo modo, e simetricamente, o bem-estar de nossas classes dominantes – dominantes para dentro, dominadas de fora – é a maldição de nossas multidões, condenadas a uma vida de bestas de carga.
+\\end{quote}
+
+
+`;
